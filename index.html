@@ -1,230 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Birthday.exe ❤️</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday ❤️</title>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins', sans-serif;
-}
-
 body{
+margin:0;
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-background:linear-gradient(135deg,#0b0b14,#1a1a2e);
+background:linear-gradient(135deg,#0b0b14,#1c1c2e);
 color:white;
+font-family:Arial;
 overflow:hidden;
 }
 
-/* BOOT */
-#boot{
-position:fixed;
-inset:0;
-background:#0b0b14;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:999;
-}
+.page{display:none;text-align:center;padding:20px;}
+.active{display:block;}
 
-.boot{
-font-family:monospace;
-color:#ff9ecb;
-margin:4px;
-}
-
-/* PAGE SYSTEM */
-.page{
-opacity:0;
-pointer-events:none;
-transition:1s ease;
-position:absolute;
-text-align:center;
-max-width:750px;
-padding:20px;
-}
-
-.active{
-opacity:1;
-pointer-events:auto;
-}
-
-/* BUTTONS */
 button{
-padding:12px 26px;
+padding:12px 25px;
 margin:10px;
 border:none;
-border-radius:12px;
+border-radius:10px;
 cursor:pointer;
 font-size:16px;
-transition:0.3s;
 }
 
-#yes{
-background:#ff4da6;
-color:white;
-}
+#yes{background:#ff4da6;color:white;}
+#no{background:#444;color:white;position:relative;}
 
-#no{
-background:#444;
-color:white;
-position:relative;
-}
-
-/* TYPEWRITER */
 .typing{
 white-space:pre-wrap;
-border-right:2px solid #fff;
-overflow:hidden;
+border-right:2px solid white;
 }
 
-/* FINAL */
 .final{
-margin-top:25px;
-font-size:20px;
 opacity:0;
-transform:translateY(20px);
 transition:1.5s;
+font-size:22px;
+margin-top:20px;
 }
 
 .show{
 opacity:1;
-transform:translateY(0);
-font-size:26px;
 color:#ffb3d9;
+font-size:26px;
 font-weight:bold;
-text-shadow:0 0 12px #ff4da6;
 }
 </style>
 </head>
 
 <body>
 
-<!-- BOOT -->
-<div id="boot">
-<div class="boot">Booting system...</div>
-<div class="boot">Loading emotions...</div>
-<div class="boot">Compiling love.exe ❤️</div>
-</div>
-
 <!-- PAGE 1 -->
-<div class="page active" id="p1">
-<h2>I need your attention...</h2>
-<h3>Are you ready? 💻❤️</h3>
-
+<div class="page active" id="page1">
+<h2>Are you ready? ❤️</h2>
 <button id="yes">YES</button>
 <button id="no">NO</button>
 </div>
 
 <!-- PAGE 2 -->
-<div class="page" id="p2">
+<div class="page" id="page2">
 <h2>✨ I knew you'd say YES</h2>
-<div id="text" class="typing"></div>
+<div id="msg" class="typing"></div>
 </div>
 
 <!-- PAGE 3 -->
-<div class="page" id="p3">
+<div class="page" id="page3">
 <div>🎉💻🎂🎁🚀</div>
-
-<div class="final" id="final">
+<div id="final" class="final">
 Out of all the people I could have met, I'm really glad I met you. ❤️
 </div>
 </div>
 
 <script>
 
-/* BOOT */
-setTimeout(()=>{
-document.getElementById("boot").style.display="none";
-},2200);
-
-/* PAGE SWITCH */
-function show(page){
-document.querySelectorAll(".page").forEach(p=>{
-p.classList.remove("active");
-});
-document.getElementById(page).classList.add("active");
-}
-
 /* NO BUTTON */
 const no=document.getElementById("no");
-let shrink=1;
+let scale=1;
 
 no.addEventListener("mouseover",()=>{
 no.style.position="absolute";
 no.style.top=Math.random()*80+"%";
 no.style.left=Math.random()*80+"%";
 
-shrink-=0.06;
-if(shrink>0.35){
-no.style.transform=`scale(${shrink})`;
+scale-=0.05;
+if(scale>0.3){
+no.style.transform=`scale(${scale})`;
 }
 });
 
-/* YES */
+/* YES CLICK */
 document.getElementById("yes").onclick=()=>{
-show("p2");
+document.getElementById("page1").classList.remove("active");
+document.getElementById("page2").classList.add("active");
 
 confetti({
-particleCount:160,
-spread:130,
+particleCount:120,
+spread:100,
 origin:{y:0.6}
 });
 
-typeText();
+typeWriter();
 };
 
-/* MESSAGE */
-const msg = `Hey love ❤️,
+/* الرسالة (مضمونة) */
+const text = `Hey love ❤️,
 Happy Birthday! 🎉🎂
 
 I can't believe this is our first birthday together, and it makes me so happy to be a part of your special day.
 
 I wanted to create this little surprise just for you, because you deserve something made with love and care. ✨
 
-Thank you for all the smiles, the conversations, the support, and the beautiful moments we've shared. You mean so much more to me than words can explain.
+Thank you for all the smiles, the conversations, the support, and the beautiful moments we've shared.
 
-I admire your passion, your determination, and the way you keep working hard for your dreams. 💻🚀
-
-On your birthday, I wish you happiness, success, good health, and everything you've been hoping for.
-
-And honestly, I may not be able to give you a gift that matches your worth, but I wanted to create this whole page just so you would know how special you are to me. ❤️
+I admire your passion, your determination, and your way of chasing your dreams 💻🚀
 
 Enjoy your day, my favorite programmer. 💙
 
-P.S. This is our first birthday together... and hopefully the first of many. ❤️`;
+P.S. This is our first birthday together... and hopefully many more ❤️`;
 
+function typeWriter(){
 let i=0;
-function typeText(){
-let box=document.getElementById("text");
+let msg=document.getElementById("msg");
 
-function run(){
-if(i<msg.length){
-box.innerHTML+=msg[i];
+function typing(){
+if(i<text.length){
+msg.innerHTML+=text.charAt(i);
 i++;
-setTimeout(run,14);
+setTimeout(typing,15);
 }else{
-setTimeout(()=>{
-show("p3");
+setTimeout(showFinal,1000);
+}
+}
+typing();
+}
+
+/* PAGE 3 */
+function showFinal(){
+document.getElementById("page2").classList.remove("active");
+document.getElementById("page3").classList.add("active");
+
 setTimeout(()=>{
 document.getElementById("final").classList.add("show");
 },1500);
-},800);
-}
-}
-run();
 }
 
 </script>
